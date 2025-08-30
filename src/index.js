@@ -1,5 +1,6 @@
-
 import Phaser from "phaser";
+
+// * WebGL (Web Graphics Library) JS API for rendering 2D and 3D graphics
 
 const config = {
   type: Phaser.AUTO,
@@ -7,22 +8,21 @@ const config = {
   height: 600,
   physics: {
     default: 'arcade',
-    arcade: {
-      gravity: { y: 200 }
-    }
   },
   scene: {
-    preload: preload,
-    create: create
+    preload,
+    create
   }
 };
 
-new Phaser.Game(config);
-
-function preload () {
+function preload(){
+  //debugger
   this.load.image('sky', 'assets/sky.png');
-}
+};
 
-function create () {
-  this.add.image(400, 300, 'sky');
-}
+function create(){
+  //debugger
+  this.add.image(0, 0, 'sky').setOrigin(0, 0);
+};
+
+new Phaser.Game(config);
