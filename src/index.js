@@ -27,6 +27,7 @@ let upperPipe = null;
 let lowerPipe = null;
 const pipeVerticalDistanceRange = [150, 250];
 let pipeVerticalDistance = Phaser.Math.Between(...pipeVerticalDistanceRange);
+let pipeVerticalPosition = Phaser.Math.Between(50, config.height - 50 - pipeVerticalDistance);
 
 const flapVelocity = 300;
 const initialBirdPosition = { x: config.width / 10, y: config.height / 2 };
@@ -42,7 +43,7 @@ function create(){
   this.add.image(0, 0, 'sky').setOrigin(0, 0); //Background
   bird = this.physics.add.sprite(initialBirdPosition.x, initialBirdPosition.y, 'bird').setOrigin(0); //Bird
   bird.body.gravity.y = 400;
-  upperPipe = this.physics.add.sprite(400, 100, 'pipe').setOrigin(0, 1); //Upper Pipe
+  upperPipe = this.physics.add.sprite(400, pipeVerticalPosition, 'pipe').setOrigin(0, 1); //Upper Pipe
   lowerPipe = this.physics.add.sprite(400, upperPipe.y + pipeVerticalDistance, 'pipe').setOrigin(0, 0); //Lower Pipe
 
   // CONTROLES
