@@ -7,7 +7,7 @@ const config = {
   physics: {
     default: 'arcade',
     arcade: {
-      gravity: { y: 400 },
+      //gravity: { y: 400 },
       debug: true,
     }
   },
@@ -21,17 +21,23 @@ const config = {
 function preload(){
   this.load.image('sky', 'assets/sky.png');
   this.load.image('bird', 'assets/bird.png');
+  this.load.image('pipe', 'assets/pipe.png');
 };
 
 const VELOCITY = 200;
 
 let bird = null;
+let upperPipe = null;
+let lowerPipe = null;
 const flapVelocity = 300;
 const initialBirdPosition = { x: config.width / 10, y: config.height / 2 };
 
 function create(){
   this.add.image(0, 0, 'sky').setOrigin(0, 0); //Background
-  bird = this.physics.add.sprite(initialBirdPosition.x, initialBirdPosition.y, 'bird').setOrigin(0, 0); //Bird
+  bird = this.physics.add.sprite(initialBirdPosition.x, initialBirdPosition.y, 'bird').setOrigin(0); //Bird
+  bird.body.gravity.y = 400;
+  upperPipe = this.physics.add.sprite(400, 100, 'pipe').setOrigin(0, 1); //Upper Pipe
+  lowerPipe = this.physics.add.sprite(400, upperPipe.y + 100, 'pipe').setOrigin(0, 0); //Lower Pipe
 
   // CONTROLES
   this.input.on('pointerdown', flap); //Click
