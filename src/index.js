@@ -25,16 +25,14 @@ const PIPES_TO_RENDER = 4;
 let bird = null;
 let pipes = null;
 
-let upperPipe = null;
-let lowerPipe = null;
-
 const pipeVerticalDistanceRange = [150, 250];
 const pipeHorizontalDistanceRange = [380, 420];
 
 const flapVelocity = 300;
 const initialBirdPosition = { x: config.width / 10, y: config.height / 2 };
 
-// MAIN FUNCTIONS
+// MAIN FUNCTIONS: Preload, Create, Update ...............................
+
 function preload(){
   this.load.image('sky', 'assets/sky.png');
   this.load.image('bird', 'assets/bird.png');
@@ -70,7 +68,12 @@ function update(time, delta){
   if(bird.y > config.height || bird.y < -bird.height){
     restartBirdPosition();
   }
+
+  recyclePipes();
 };
+
+// MAIN FUNCTIONS: Preload, Create, Update ...............................
+
 
 // FUNCTIONS
 function placePipe(uPipe, lPipe){
@@ -87,6 +90,20 @@ function placePipe(uPipe, lPipe){
   
 };
 
+function recyclePipes(){
+
+  const tempPipes = [];
+  pipes.getChildren().forEach(pipe => {
+    if(pipe.getBounds().right <= 0){
+      tempPipes.push(pipe);
+      if(tempPipes.length === 2){
+        placePipe(...tempPipes);
+      }
+    }
+  });
+
+};
+
 function getRightMostPipe(){
 
   let rightMostX = 0;
@@ -95,7 +112,7 @@ function getRightMostPipe(){
   });
   return rightMostX;
 
-}
+};
 
 function restartBirdPosition(){
 
@@ -105,7 +122,7 @@ function restartBirdPosition(){
 };
 
 function flap(){
-  bird.body.velocity.y = -VELOCITY;
+  bird.body.velocity.y = -flapVelocity;
 };
 
 
