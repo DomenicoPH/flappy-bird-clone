@@ -5,6 +5,12 @@ class BaseScene extends Phaser.Scene{
     constructor(key, config){
         super(key);
         this.config = config;
+        this.screenCenter = [config.width / 2, config.height / 2];
+        this.fontSize = '32px';
+        this.fontFamily = 'Arial';
+        this.fontColor = '#FFF'
+        this.lineHeight = 42;
+        this.fontOptions = {fontfamily: `${this.fontFamily}`, fontSize: `${this.fontSize}`, fill: `${this.fontColor}`}
     }
 
     create(){
@@ -15,7 +21,16 @@ class BaseScene extends Phaser.Scene{
 
     createBG(){
         this.add.image(0, 0, 'sky').setOrigin(0);
-    };// Crea el fondo
+    };
+
+    createMenu(menu){
+        let lastMenuPositionY = 0;
+        menu.forEach(menuItem => {
+            const menuPosition = [ this.screenCenter[0], this.screenCenter[1] + lastMenuPositionY ];
+            this.add.text(...menuPosition, menuItem.text, this.fontOptions).setOrigin(0.5, 1);
+            lastMenuPositionY += this.lineHeight;
+        });
+    }
 
 }
 export default BaseScene;

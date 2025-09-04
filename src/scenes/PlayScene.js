@@ -70,10 +70,12 @@ class PlayScene extends BaseScene {
 
     createPause(){
       const pauseButton = this.add.image(this.config.width - 10, this.config.height - 10, 'pause').setOrigin(1).setScale(3).setInteractive();
-      pauseButton.on('pointerdown', () => {
+      const pauseGame = () => {
         this.physics.pause();
         this.scene.pause();
-      })
+      }
+      pauseButton.on('pointerdown', pauseGame);//Pausa con Click
+      this.input.keyboard.on('keydown-P', pauseGame);//Pausa con tecla P
     };// Crea el botón de pausa
 
     handleInputs(){
