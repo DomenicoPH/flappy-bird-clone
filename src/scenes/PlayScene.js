@@ -27,6 +27,7 @@ class PlayScene extends Phaser.Scene {
         this.load.image('sky', 'assets/sky.png');
         this.load.image('bird', 'assets/bird.png');
         this.load.image('pipe', 'assets/pipe.png');
+        this.load.image('pause', 'assets/pause.png');
     };
     
     create(){
@@ -35,6 +36,7 @@ class PlayScene extends Phaser.Scene {
         this.createPipes();
         this.createColliders();
         this.createScore();
+        this.createPause();
         this.handleInputs();
     };
 
@@ -77,6 +79,14 @@ class PlayScene extends Phaser.Scene {
       this.scoreText = this.add.text(16, 16, `Score: ${this.score}`, { fontFamily: 'Arial', fontSize: '32px', fill: '#000' });
       this.bestScoreText = this.add.text(16, 52, `Best Score: ${bestScore || 0}`, { fontFamily: 'Arial', fontSize: '18px', fill: '#000' });
     }// Crea el texto de la puntuación
+
+    createPause(){
+      const pauseButton = this.add.image(this.config.width - 10, this.config.height - 10, 'pause').setOrigin(1).setScale(3).setInteractive();
+      pauseButton.on('pointerdown', () => {
+        this.physics.pause();
+        this.scene.pause();
+      })
+    };// Crea el botón de pausa
 
     handleInputs(){
         // CONTROLES
