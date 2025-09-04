@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 
-const VELOCITY = 200;
-const GRAVITY = 400;
+const VELOCITY = 250;
+const GRAVITY = 600;
 const PIPES_TO_RENDER = 4;
 
 class PlayScene extends Phaser.Scene {
@@ -17,7 +17,7 @@ class PlayScene extends Phaser.Scene {
         this.pipeVerticalDistanceRange = [150, 250];
         this.pipeHorizontalDistanceRange = [500, 550];
 
-        this.flapVelocity = 250;
+        this.flapVelocity = 300;
     }
 
     preload(){
@@ -48,6 +48,7 @@ class PlayScene extends Phaser.Scene {
     createBird(){
         this.bird = this.physics.add.sprite(this.config.startPosition.x, this.config.startPosition.y, 'bird').setOrigin(0);
         this.bird.body.gravity.y = GRAVITY;
+        this.bird.setCollideWorldBounds(true);
     };
 
     createPipes(){
@@ -73,7 +74,7 @@ class PlayScene extends Phaser.Scene {
     };
 
     checkGameStatus(){
-        if(this.bird.y > this.config.height || this.bird.y < -this.bird.height){
+        if(this.bird.getBounds().bottom >= this.config.height || this.bird.getBounds().top <= 0){  
           this.gameOver();
         }
     };
@@ -120,13 +121,17 @@ class PlayScene extends Phaser.Scene {
 
     gameOver(){
 
-      //this.bird.x = this.config.startPosition.x;
-      //this.bird.y = this.config.startPosition.y;
-      //this.bird.body.velocity.y = 0;
       this.physics.pause();
       this.bird.setTint(0xEE4824);
+      this.time.addEvent({
+        delay: 1000,
+        callback: () => {
+          this.scene.restart();
+        },
+        loop: false
+      });
 
-    };// Reinicia la posición del pájaro
+    };// Reinicia el juego
 
     flap(){
       this.bird.body.velocity.y = -this.flapVelocity;
