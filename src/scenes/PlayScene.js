@@ -18,6 +18,9 @@ class PlayScene extends Phaser.Scene {
         this.pipeHorizontalDistanceRange = [500, 550];
 
         this.flapVelocity = 300;
+
+        this.score = 0;
+        this.scoreText = '';
     }
 
     preload(){
@@ -31,6 +34,7 @@ class PlayScene extends Phaser.Scene {
         this.createBird();
         this.createPipes();
         this.createColliders();
+        this.createScore();
         this.handleInputs();
     };
 
@@ -43,13 +47,13 @@ class PlayScene extends Phaser.Scene {
 
     createBG(){
         this.add.image(0, 0, 'sky').setOrigin(0);
-    };
+    };// Crea el fondo
 
     createBird(){
         this.bird = this.physics.add.sprite(this.config.startPosition.x, this.config.startPosition.y, 'bird').setOrigin(0);
         this.bird.body.gravity.y = GRAVITY;
         this.bird.setCollideWorldBounds(true);
-    };
+    };// Crea el pájaro
 
     createPipes(){
         this.pipes = this.physics.add.group();
@@ -61,11 +65,16 @@ class PlayScene extends Phaser.Scene {
         }
     
         this.pipes.setVelocityX(-VELOCITY);
-    };
+    };// Crea las pipes
 
     createColliders(){
       this.physics.add.collider( this.bird, this.pipes, this.gameOver, null, this );
-    }
+    }// Crea la colisión entre el pájaro y las pipes
+
+    createScore(){
+      this.score = 0;
+      this.scoreText = this.add.text(16, 16, `Score: ${this.score}`, { fontFamily: 'Arial', fontSize: '32px', fill: '#000' });
+    }// Crea el texto de la puntuación
 
     handleInputs(){
         // CONTROLES
@@ -77,7 +86,7 @@ class PlayScene extends Phaser.Scene {
         if(this.bird.getBounds().bottom >= this.config.height || this.bird.getBounds().top <= 0){  
           this.gameOver();
         }
-    };
+    };// Comprueba si el pájaro ha chocado con el suelo o el techo
 
     placePipe(uPipe, lPipe){
 
@@ -103,6 +112,7 @@ class PlayScene extends Phaser.Scene {
           tempPipes.push(pipe);
           if(tempPipes.length === 2){
             this.placePipe(...tempPipes);
+            this.increaseScore();
           }
         }
       });
@@ -136,6 +146,11 @@ class PlayScene extends Phaser.Scene {
     flap(){
       this.bird.body.velocity.y = -this.flapVelocity;
     };// Hace que el pájaro vuele
+
+    increaseScore(){
+      this.score++;
+      this.scoreText.setText(`Score: ${this.score}`);
+    }// Aumenta la puntuación
 
 }
 
