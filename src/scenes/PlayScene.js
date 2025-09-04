@@ -37,7 +37,7 @@ class PlayScene extends BaseScene {
         this.recyclePipes();
     };
 
-    // --- Métodos (Funciones) ---
+    // Custom Functions
 
     createBird(){
         this.bird = this.physics.add.sprite(this.config.startPosition.x, this.config.startPosition.y, 'bird').setOrigin(0);
