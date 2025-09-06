@@ -73,6 +73,7 @@ class PlayScene extends BaseScene {
       const pauseGame = () => {
         this.physics.pause();
         this.scene.pause();
+        this.scene.launch('PauseScene');
       }
       pauseButton.on('pointerdown', pauseGame);//Pausa con Click
       this.input.keyboard.on('keydown-P', pauseGame);//Pausa con tecla P
