@@ -30,7 +30,15 @@ class PauseScene extends BaseScene {
         });
 
         textGO.on('pointerup', () => {
-            console.log('clicking option')
+            if(menuItem.scene && menuItem.text === 'Continue'){
+                //Continue
+                this.scene.stop();
+                this.scene.resume(menuItem.scene);
+            } else {
+                //Exit
+                this.scene.stop('PlayScene');
+                this.scene.start(menuItem.scene);
+            }
         });
     }
 }
