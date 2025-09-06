@@ -30,6 +30,7 @@ class PlayScene extends BaseScene {
         this.createScore();
         this.createPause();
         this.handleInputs();
+        this.listenToEvents();
     };
 
     update(){
@@ -37,7 +38,33 @@ class PlayScene extends BaseScene {
         this.recyclePipes();
     };
 
+    listenToEvents(){
+      if(this.pauseEvent) return;
+      this.pauseEvent = this.events.on('resume', () => {
+
+        this.initialTime = 3;
+        this.countDownText = this.add.text(...this.screenCenter, `Fly in: ${this.initialTime}`, this.fontOptions).setOrigin(0.5);
+        this.TimedEvent = this.time.addEvent({
+          delay: 1000,
+          callback: this.countDown,
+          callbackScope: this,
+          loop: true
+        })
+
+      })
+    }
+
     // Custom Functions
+
+    countDown(){
+      this.initialTime--;
+      this.countDownText.setText(`Fly in: ${this.initialTime}`);
+      if(this.initialTime <= 0){
+        this.countDownText.setText('');
+        this.physics.resume();
+        this.TimedEvent.remove();
+      }
+    };// Cuenta regresiva
 
     createBird(){
         this.bird = this.physics.add.sprite(this.config.startPosition.x, this.config.startPosition.y, 'bird').setOrigin(0);
