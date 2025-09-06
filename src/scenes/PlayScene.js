@@ -12,6 +12,8 @@ class PlayScene extends BaseScene {
         this.bird = null;
         this.pipes = null;
 
+        this.isPaused = false;
+
         this.pipeHorizontalDistance = 0;
         this.pipeVerticalDistanceRange = [150, 250];
         this.pipeHorizontalDistanceRange = [500, 550];
@@ -60,6 +62,7 @@ class PlayScene extends BaseScene {
       this.initialTime--;
       this.countDownText.setText(`Fly in: ${this.initialTime}`);
       if(this.initialTime <= 0){
+        this.isPaused = false;
         this.countDownText.setText('');
         this.physics.resume();
         this.TimedEvent.remove();
@@ -186,6 +189,7 @@ class PlayScene extends BaseScene {
     };// Reinicia el juego
 
     flap(){
+      if(this.isPaused) return;
       this.bird.body.velocity.y = -this.flapVelocity;
     };// Hace que el pájaro vuele
 
