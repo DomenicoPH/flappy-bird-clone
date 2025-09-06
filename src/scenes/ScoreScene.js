@@ -3,7 +3,7 @@ import BaseScene from "./BaseScene";
 class ScoreScene extends BaseScene {
 
     constructor(config){
-        super('ScoreScene', config);
+        super('ScoreScene', {...config, canGoBack: true});
     }
 
     create(){
@@ -12,9 +12,6 @@ class ScoreScene extends BaseScene {
         this.add.text(...this.screenCenter, `Best Score: ${bestScore || 0}`, this.fontOptions).setOrigin(0.5);
     }
 
-    // Custom Functions
-
-    
-}
+};
 
 export default ScoreScene;
