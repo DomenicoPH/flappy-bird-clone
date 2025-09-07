@@ -15,16 +15,34 @@ class PlayScene extends BaseScene {
         this.isPaused = false;
 
         this.pipeHorizontalDistance = 0;
-        this.pipeVerticalDistanceRange = [150, 250];
-        this.pipeHorizontalDistanceRange = [500, 550];
-
         this.flapVelocity = 300;
 
         this.score = 0;
         this.scoreText = '';
+
+        this.currentDifficulty = 'easy';
+        this.difficulties = {
+          'easy': {
+            pipeHorizontalDistanceRange: [500, 550],
+            pipeVerticalDistanceRange: [175, 225]
+          },
+          'normal': {
+            pipeHorizontalDistanceRange: [400, 450],
+            pipeVerticalDistanceRange: [150, 200]
+          },
+          'hard': {
+            pipeHorizontalDistanceRange: [300, 350],
+            pipeVerticalDistanceRange: [125, 175]
+          },
+          'hardest': {
+            pipeHorizontalDistanceRange: [200, 250],
+            pipeVerticalDistanceRange: [100, 150]
+          },
+        }
     }
     
     create(){
+        this.currentDifficulty = 'easy';
         super.create();
         this.createBird();
         this.createPipes();
@@ -122,11 +140,12 @@ class PlayScene extends BaseScene {
     };// Comprueba si el pájaro ha chocado con el suelo o el techo
 
     placePipe(uPipe, lPipe){
+      const difficulty = this.difficulties[this.currentDifficulty];
 
       const rightMostX = this.getRightMostPipe();
-      const pipeVerticalDistance = Phaser.Math.Between(...this.pipeVerticalDistanceRange);
+      const pipeVerticalDistance = Phaser.Math.Between(...difficulty.pipeVerticalDistanceRange);
       const pipeVerticalPosition = Phaser.Math.Between(20, this.config.height - 20 - pipeVerticalDistance);
-      const pipeHorizontalDistance = Phaser.Math.Between(...this.pipeHorizontalDistanceRange);
+      const pipeHorizontalDistance = Phaser.Math.Between(...difficulty.pipeHorizontalDistanceRange);
 
       uPipe.x = rightMostX + pipeHorizontalDistance;
       uPipe.y = pipeVerticalPosition;
@@ -147,11 +166,18 @@ class PlayScene extends BaseScene {
             this.placePipe(...tempPipes);
             this.increaseScore();
             this.saveBestScore();
+            this.increaseDifficulty();
           }
         }
       });
 
     };// Recicla las pipes
+
+    increaseDifficulty(){
+      if(this.score === 10) this.currentDifficulty = 'normal'
+      if(this.score === 20) this.currentDifficulty = 'hard'
+      if(this.score === 30) this.currentDifficulty = 'hardest'
+    }// Aumenta la dificultad
 
     getRightMostPipe(){
 
